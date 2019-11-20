@@ -4,13 +4,16 @@
   "description": "online pets shopping",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
+    "start": "node server.js",
+    "server": "nodemon server.js"
   },
   "author": "Fady & Monica",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.7.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0"
   }
 }
