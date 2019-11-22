@@ -1,8 +1,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 const Ads = require('./server/api/ads')
+const Questions = require('./server/api/questions')
+const User = require('./server/api/regUser')
+
 
 const app = express()
+
+app.use(bodyParser.json())
+
 
 const db = require('./config/keys').mongoURI
 
@@ -11,6 +18,8 @@ mongoose.connect(db)
     .catch(err=>console.log(err));
 
 app.use('/api/ads',Ads)
+app.use('/api/questions',Questions)
+app.use('/api/user',User)
 
 const port = process.env.PORT || 5000;
 
