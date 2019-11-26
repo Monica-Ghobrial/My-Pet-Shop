@@ -3,7 +3,12 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 import SignIn from './pages/signIn'
 import SignUp from './pages/signUp'
+import PrivateRoute from './privateRoute'
+import setAuthToken from './auth'
 
+if (localStorage.jwtToken){
+  setAuthToken(localStorage.jwtToken)
+}
 
 class App extends Component {
   render(){
@@ -17,6 +22,8 @@ class App extends Component {
           crossOrigin='anonymous' />
         <Switch>
           <Route exact path='/signUp' component={SignUp} />
+          <Route exact path='/signIn' component={SignIn} />
+          <PrivateRoute exact path='/try' component={"WELCOME"}/>
         
         </Switch>
 
