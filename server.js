@@ -5,6 +5,9 @@ const Ads = require('./server/api/ads')
 const Questions = require('./server/api/questions')
 const User = require('./server/api/regUser')
 
+const UserContollers = require('./server/Controllers/UserControllers')
+const routes = require('./server/routes.js')
+
 
 const app = express()
 
