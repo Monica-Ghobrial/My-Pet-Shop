@@ -49,7 +49,8 @@ const AdsSchema = new Schema ({
      },
 
      timePosted :{
-        type:Date
+        type:Date,
+        required: true
      }
 
 })
