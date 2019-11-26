@@ -11,7 +11,7 @@ const RegUsersSchema = new Schema( {
         type: String
        // required: true
     },
-    phone_number:{
+    phoneNumber:{
         type: Number 
         //required: true
     },
