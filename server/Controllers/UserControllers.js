@@ -1,8 +1,106 @@
 const Questions = require("./../models/Questions");
 const Ads = require("./../models/Ads");
+const User = require("../models/RegUsers")
+const passport = require('passport')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+const config = require('../../config/keys')
+const mail = require('../../config/mail')
+const tokenKey = config.secretOrKey;
+const mailer = require('../mailer')
 
 
 let UserControllers = {
+    // authentication
+    authenticate: passport.authenticate('jwt', { session: false }),
+
+    Login : async (req, res) => {
+      try {
+        const { email, password } = req.body;
+        const User = await User.findOne({ email });
+        
+        if (!User) return res.status(400).json({ error : "Email does not exist" });
+  
+        if (User){
+          const match = bcrypt.compareSync(password, User.password);
+          if (match) {
+            if (User.active===true){
+              const payload = {
+                  id: User._id,
+                  email: User.email,
+                };
+                const token = jwt.sign(payload, tokenKey, { expiresIn: "1000h" });
+                return res.json({data: `Bearer ${token}`})
+              }else {
+                return res.json({data:'You need to verify the email that is used in registeration'})
+              }
+              }else return res.status(400).send({ error: "Wrong password" });
+        }        
+  
+      } 
+      catch (e) {
+          console.log(e)
+      }
+    },
+    register : async (req, res) => {
+
+      const {       
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        email,
+        password,
+        gender,
+       } = req.body
+      console.log(55,"HERE")
+      const oldUser = await User.findOne({ email })
+      if (oldUser)
+      {
+          console.log('Email Exists')
+          return res.status(400).json({ error: 'Email already exists' })
+      }
+      else{
+        const payload = {
+          email: email,
+        };
+        const token = jwt.sign(payload, tokenKey, { expiresIn: "1000h" });
+        const salt = bcrypt.genSaltSync(10);
+        console.log(69,token)
+        const hashPass = bcrypt.hashSync(password, salt);
+        const newUser = await User.create({
+                firstName,
+                lastName,
+                phoneNumber,
+                address,
+                email,
+                password:hashPass,
+                gender,
+                active : false,
+                secret : token
+              })
+              console.log(newUser)
+              res.json({ msg: 'Register succefully , Please open your email and follow the steps to activate your account', data: newUser })
+              console.log("haha")
+              try{
+                const html = 'Hi there, <br/> Thank you for registering <br/><br/> Please verify your email by clicking on the following page:<a href= "http://localhost:3000/verify/'+User.secret+'">Click here to verify</a></br></br> '
+                console.log(email)
+                await mailer.sendEmail(mail.user, email, 'Please verify your email', html)
+              }catch(e){
+                console.log(e)
+              }             
+      }
+  },
+
+    verify: async (req,res) => {
+        try{
+            const user = await User.findOne({"secret":req.params.tok})
+            const update = await User.findByIdAndUpdate( user._id,{"active" :true})
+        }
+        catch(error){
+            res.json({message:'error'})
+        }
+    },
 
     //ask question (to specific user ??)
     AskQuestion:async (req, res) => {

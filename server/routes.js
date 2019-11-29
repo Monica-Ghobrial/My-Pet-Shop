@@ -8,6 +8,8 @@ router.post('/AskQuestion',UserControllers.AskQuestion)
 router.post('/ReportAD/:id',UserControllers.ReportAD)
 router.post('/PostAD',UserControllers.PostAD)
 router.post('/CalculateAndReportAD/:id',SystemControllers.CalculateAndReportAD)
-router.get('/ViewAllADs',UserControllers. ViewAllADs)
+
+//SIGN 
+router.post('/signUp',UserControllers.register)
 
 module.exports = router

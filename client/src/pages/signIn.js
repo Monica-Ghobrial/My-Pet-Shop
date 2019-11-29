@@ -10,13 +10,8 @@ const image = require('../images/dog.jpg')
 class signUp extends Component {
 
     state = {
-       firstName:"",
-       lastName:"",
-       email:"",
-       phoneNumber:"",
-       address:"",
-       gender:"",
-
+        email:"",
+        password:""
     }
 
     validateItem=(e)=>{
@@ -28,11 +23,11 @@ class signUp extends Component {
     
     submitData =(event)=>{
         event.preventDefault();
-
-        axios
-        .post('http://localhost:5000/api/user',this.state)
-        .then( (res) => {console.log(res) })
-        .catch(err => alert(err.message))
+        console.log(this.state)
+        // axios
+        // .post('http://localhost:5000/api/user',this.state)
+        // .then( (res) => {console.log(res) })
+        // .catch(err => alert(err.message))
 
       }
 

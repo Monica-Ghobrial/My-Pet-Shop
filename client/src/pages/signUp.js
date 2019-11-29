@@ -12,11 +12,11 @@ class signUp extends Component {
     state = {
        firstName:"",
        lastName:"",
-       email:"",
        phoneNumber:"",
        address:"",
+       email:"",
+       password:"",
        gender:"",
-
     }
 
     validateItem=(e)=>{
@@ -28,11 +28,21 @@ class signUp extends Component {
     
     submitData =(event)=>{
         event.preventDefault();
-
-        axios
-        .post('http://localhost:5000/api/user',this.state)
-        .then( (res) => {console.log(res) })
-        .catch(err => alert(err.message))
+        
+        try{
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/signUp',
+            headers: {},
+            data: this.state
+          }).then(
+          res => {alert(res.data.msg)}
+         )
+        
+        
+        } catch(error){
+        console.log(error)
+        }  
 
       }
 
