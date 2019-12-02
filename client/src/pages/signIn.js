@@ -24,10 +24,7 @@ class signUp extends Component {
     submitData =(event)=>{
         event.preventDefault();
         console.log(this.state)
-        // axios
-        // .post('http://localhost:5000/api/user',this.state)
-        // .then( (res) => {console.log(res) })
-        // .catch(err => alert(err.message))
+        
 
       }
 
