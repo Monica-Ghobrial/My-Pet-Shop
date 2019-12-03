@@ -11,5 +11,7 @@ router.post('/CalculateAndReportAD/:id',SystemControllers.CalculateAndReportAD)
 
 //SIGN 
 router.post('/signUp',UserControllers.register)
+router.post('/signIn',UserControllers.Login)
+router.get('/verify/:token',UserControllers.verify)
 
 module.exports = router
