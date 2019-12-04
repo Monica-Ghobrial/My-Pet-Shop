@@ -9,9 +9,15 @@ router.post('/ReportAD/:id',UserControllers.ReportAD)
 router.post('/PostAD',UserControllers.PostAD)
 router.post('/CalculateAndReportAD/:id',SystemControllers.CalculateAndReportAD)
 
+//router.get('/ViewAllADs',UserControllers. ViewAllADs)
+//router.get('/UploadPhoto', UserControllers.uploadPhotos)
+router.put('/ChangePassword/:id', UserControllers.changePassword)
+
+
 //SIGN 
 router.post('/signUp',UserControllers.register)
 router.post('/signIn',UserControllers.Login)
 router.get('/verify/:token',UserControllers.verify)
+
 
 module.exports = router

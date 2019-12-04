@@ -9,10 +9,10 @@ CalculateAndReportAD: async (req, res)=>{
       console.log("arrived")
       const id= req.params.id
       const AD = await Ads.findById(id)
-      const updateAD =null
+      //const updateAD =null
       if(AD.views >= 3)
       console.log("arrived2")
-           updatedAD = await Ads.findByIdAndUpdate (id, {'reported':true})
+          var updatedAD = await Ads.findByIdAndUpdate (id, {"reported":true})
        }
 
     catch (error) {
