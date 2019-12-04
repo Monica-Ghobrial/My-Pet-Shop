@@ -23,6 +23,11 @@ const RegUsersSchema = new Schema( {
         type: String
         //required: true
     },
+
+    password: {
+        type: String
+    },
+    
     gender: {
         type: String
     },
