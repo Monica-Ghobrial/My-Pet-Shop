@@ -17,17 +17,16 @@ let UserControllers = {
     Login : async (req, res) => {
       try {
         const { email, password } = req.body;
-        const User = await User.findOne({ email });
-        
-        if (!User) return res.status(400).json({ error : "Email does not exist" });
+        const log_user = await User.findOne({ email });
+        if (!log_user) return res.status(400).json({ error : "Email does not exist" });
   
-        if (User){
-          const match = bcrypt.compareSync(password, User.password);
+        if (log_user){
+          const match = bcrypt.compareSync(password, log_user.password);
           if (match) {
-            if (User.active===true){
+            if (log_user.active===true){
               const payload = {
-                  id: User._id,
-                  email: User.email,
+                  id: log_user._id,
+                  email: log_user.email,
                 };
                 const token = jwt.sign(payload, tokenKey, { expiresIn: "1000h" });
                 return res.json({data: `Bearer ${token}`})
@@ -83,7 +82,7 @@ let UserControllers = {
               res.json({ msg: 'Register succefully , Please open your email and follow the steps to activate your account', data: newUser })
               console.log("haha")
               try{
-                const html = 'Hi there, <br/> Thank you for registering <br/><br/> Please verify your email by clicking on the following page:<a href= "http://localhost:3000/verify/'+User.secret+'">Click here to verify</a></br></br> '
+                const html = 'Hi there, <br/> Thank you for registering <br/><br/> Please verify your email by clicking on the following page:<a href= "http://localhost:3000/verify/'+newUser.secret+'">Click here to verify</a></br></br> '
                 console.log(email)
                 await mailer.sendEmail(mail.user, email, 'Please verify your email', html)
               }catch(e){
@@ -94,7 +93,8 @@ let UserControllers = {
 
     verify: async (req,res) => {
         try{
-            const user = await User.findOne({"secret":req.params.tok})
+            console.log(req.params.token)
+            const user = await User.findOne({"secret":req.params.token})
             const update = await User.findByIdAndUpdate( user._id,{"active" :true})
         }
         catch(error){
