@@ -9,6 +9,7 @@ const Photos = require('googlephotos');
 const OAuth2Data = require('./server/google_keys.json')
 
 const UserContollers = require('./server/Controllers/UserControllers')
+
 const routes = require('./server/routes.js')
 const request = require('request');
 ////////////////////////////////////////////
@@ -20,6 +21,8 @@ const request = require('request');
 // const sessionFileStore = require('session-file-store');
 // const uuid = require('uuid');
 // const winston = require('winston');
+
+
 
 // //const fileStore = sessionFileStore(session);
 // const server = http.Server(app);
@@ -237,9 +240,17 @@ app.get('/auth/google/callback', function (req, res) {
 //   next();
 // });
 
+
 // app.get('/search', (req, res) => {
 //     renderIfAuthenticated(req, res, 'pages/search');
 //   });
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });
+
 
 //   app.get('/album', (req, res) => {
 //     renderIfAuthenticated(req, res, 'pages/album');

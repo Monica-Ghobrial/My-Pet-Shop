@@ -11,7 +11,7 @@ const RegUsersSchema = new Schema( {
         type: String
        // required: true
     },
-    phone_number:{
+    phoneNumber:{
         type: Number 
         //required: true
     },
@@ -27,11 +27,19 @@ const RegUsersSchema = new Schema( {
     password: {
         type: String
     },
-    
+
+
     gender: {
         type: String
     },
-  
+
+    active:{
+        type:Boolean
+    },
+
+    secret:{
+        type:String
+    },
     photo:{
 
     },
