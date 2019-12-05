@@ -43,14 +43,12 @@ const AdsSchema = new Schema ({
        // required: true 
     },
 
-    images:{
+    photos:{
         type: [
             {
-                    imageKey : {
-                        type: String
-                    }
+               type: String   
                 }
-                ] 
+            ] 
     },
 
     reported :{

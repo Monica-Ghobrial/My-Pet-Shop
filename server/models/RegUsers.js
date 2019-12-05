@@ -40,25 +40,11 @@ const RegUsersSchema = new Schema( {
     secret:{
         type:String
     },
-    
-    userAds: {
-        type: [
-        {
-                adID : {
-                    type: Schema.Types.ObjectId, ref: 'Ads',
-                }
-            }
-            ]
-        },
 
      userNotif: {
-         type: [
-            {
-                    textNotif : {
-                        type: String
-                    }
-                }
-                ]
+         type: [{
+                type: String    
+         }]
             }
 })
 module.exports= RegUsers=mongoose.model('RegUsers',RegUsersSchema)

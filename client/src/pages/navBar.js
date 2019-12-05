@@ -36,7 +36,8 @@ class navbar extends Component {
                     />
                     </Navbar.Brand>
                     <Navbar.Brand href="#home">Home</Navbar.Brand>
-                    <Navbar.Brand href="#home">My ADS</Navbar.Brand>
+                    <Navbar.Brand href="http://localhost:3000/myads">My ADS</Navbar.Brand>
+                    <Navbar.Brand href="http://localhost:3000/newads">Place Ads +</Navbar.Brand>
                     <Navbar.Brand href="#home">about</Navbar.Brand>
 
                     <Col md={{offset:8}} >

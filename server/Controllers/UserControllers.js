@@ -161,6 +161,39 @@ let UserControllers = {
                }
       },
 
+      findMyAds: async (req, res)=>{
+        try{
+          
+            const id= req.body.sellerID
+            const AD= await Ads.find({sellerID:id})
+            if (AD){
+              return res.status(200).json({ msg: 'your Ads', data: AD })
+            }else{
+              return res.status(400).json({ msg: 'Bad request' })
+            }
+           }
+
+        catch (error) {
+              console.log(error)
+             }
+      },
+
+      viewAds: async (req, res)=>{
+        try{  
+            const id= req.params.adsId
+            const AD= await Ads.findById(id)
+            if (AD){
+              return res.status(200).json({ data: AD })
+            }else{
+              return res.status(400).json({ msg: 'Bad request' })
+            }
+          }
+
+         catch (error) {
+              console.log(error)
+            }
+     },
+
       //Post a new AD
       PostAD: async (req, res)=>{
         try{
@@ -173,16 +206,25 @@ let UserControllers = {
                 api_key: '219414563696285', 
                 api_secret: 'HUtlAgCsbO0egqY2D_Vv3rz3pWE' 
               });
-              cloudinary.uploader.upload(images[i] , {folder: "MyPet",
+              await cloudinary.uploader.upload(images[i] , {folder: "MyPet",
                 overwrite: true,
                 invalidate: true,},
-              function(error, result) {img_ids[i]=result.public_id})
+              function(error, result) {
+                if (result){
+                  img_ids.push(result.public_id)
+                }
+                if (error){
+                return res.json({ msg: "Can't upload images correctly" })
+                }
+              })
             }
           }
-          signin
-          const newAD = await Ads.create(req.body)
-          const createdAD = await Ads.findByIdAndUpdate(newAD.id,{"timePosteds":new Date()})
-          
+          let newBody = Object.assign({},req.body)
+          delete newBody.images
+          newBody.photos=img_ids
+          console.log(newBody)
+          const newAD = await Ads.create(newBody)
+          return res.json({ msg: "Your ads is published now" , data:newAD.id})   
            }
 
         catch (error) {

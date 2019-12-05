@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken'
 class newAds extends Component {
 
     state = {
+        sellerID:"",
         title:"",
         mainCategory:"",
         specificCategory:"",
@@ -21,6 +22,12 @@ class newAds extends Component {
 
     }
 
+    componentDidMount(){
+        const storedToken = localStorage.getItem('jwtToken')
+        const str = storedToken.replace('Bearer ', '')
+        const token = jwt.decode(str)
+        this.setState({sellerID:token.id})
+    }
     validateItem=(e)=>{
         if (e===""){
           return true
@@ -28,44 +35,30 @@ class newAds extends Component {
         return false
     }
 
-    handleImageChange(e) {
-        e.preventDefault();
-        let reader = new FileReader();
-        let file = e.target.files[0];
-        reader.onloadend = () => {
-          try{
-              console.log(reader.result)
-              axios({
-                  method: 'post',
-                  url: 'http://localhost:5000/upload',
-                  headers: {},
-                  data: {data:reader.result}
-                }).then(
-                res => {alert(res.data.msg)}
-               )
-              
-              
-              } catch(error){
-              console.log(error)
-              }  
-          this.setState({
-            file: file,
-            imagePreviewUrl: reader.result
-          });
-        }
-        reader.readAsDataURL(file)
-    }
-
     setImage=(e)=>{
         this.setState({images:[... this.state.images,e]})
     }
 
-    sub =(e)=>{
-        console.log(this.state)
-        const storedToken = localStorage.getItem('jwtToken')
-        const str = storedToken.replace('Bearer ', '')
-        const token = jwt.decode(str)
-    }
+    submitData =(event)=>{
+        event.preventDefault();
+        console.log(this.state.images)
+        try{
+        axios({
+            method: 'post',
+            url: 'http://localhost:5000/postAds',
+            headers: {},
+            data: this.state
+          }).then(
+          res => {alert(res.data.msg)}
+         )
+        
+        
+        } catch(error){
+        console.log(error)
+        }  
+
+      }
+    
    
      
     render() {

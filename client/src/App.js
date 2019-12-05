@@ -8,6 +8,8 @@ import Verify from './pages/verify'
 import setAuthToken from './auth'
 import Navbar from './pages/navBar'
 import NewAds from './pages/newAds'
+import MyAds from './pages/myAds'
+import ViewAds from './pages/viewAds'
 
 if (localStorage.jwtToken){
   setAuthToken(localStorage.jwtToken)
@@ -29,6 +31,8 @@ class App extends Component {
           <Route exact path='/signIn' component={SignIn} />
           <Route exact path='/verify/:token' component={Verify} />
           <Route exact path='/newAds' component={NewAds} />
+          <Route exact path='/myAds' component={MyAds} />
+          <Route exact path='/ads/:adsId' component={ViewAds} />
           <PrivateRoute exact path='/try' component={"WELCOME"}/>
         
         </Switch>
