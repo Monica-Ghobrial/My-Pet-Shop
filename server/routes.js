@@ -19,5 +19,7 @@ router.post('/signUp',UserControllers.register)
 router.post('/signIn',UserControllers.Login)
 router.get('/verify/:token',UserControllers.verify)
 
+router.post('/upload',UserControllers.upload)
+
 
 module.exports = router

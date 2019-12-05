@@ -8,6 +8,7 @@ const config = require('../../config/keys')
 const mail = require('../../config/mail')
 const tokenKey = config.secretOrKey;
 const mailer = require('../mailer')
+const cloudinary = require('cloudinary').v2
 
 
 
@@ -163,18 +164,51 @@ let UserControllers = {
       //Post a new AD
       PostAD: async (req, res)=>{
         try{
-            
-          console.log("arrived")
+          let images = req.body.images
+          let img_ids = []
+          for (let i=0 ; i<images.length ; i++){
+            if (images[i].length > 0){
+              cloudinary.config({ 
+                cloud_name: 'dtuayyndb', 
+                api_key: '219414563696285', 
+                api_secret: 'HUtlAgCsbO0egqY2D_Vv3rz3pWE' 
+              });
+              cloudinary.uploader.upload(images[i] , {folder: "MyPet",
+                overwrite: true,
+                invalidate: true,},
+              function(error, result) {img_ids[i]=result.public_id})
+            }
+          }
+          signin
           const newAD = await Ads.create(req.body)
           const createdAD = await Ads.findByIdAndUpdate(newAD.id,{"timePosteds":new Date()})
-          //const user = await RegUsers.findByIdAndUpdate(newAD.sellerID, {""})
-            res.json({ msg: 'AD creates successfully', data: newAD })
+          
            }
 
         catch (error) {
               console.log(error)
-             }
+            }
     },
+
+    upload: async (req, res)=>{
+      try{
+        let link=req.body.data
+        cloudinary.config({ 
+        cloud_name: 'dtuayyndb', 
+        api_key: '219414563696285', 
+        api_secret: 'HUtlAgCsbO0egqY2D_Vv3rz3pWE' 
+      });
+      cloudinary.uploader.upload(link , {folder: "MyPet",
+        overwrite: true,
+        invalidate: true,},
+      function(error, result) {console.log(error,result.public_id)})
+      res.json({ msg: 'Uploaded' })
+       }
+
+      catch (error) {
+            console.log(error)
+          }
+  },
 /*
     uploadPhotos: async(req, res) =>{
         try{

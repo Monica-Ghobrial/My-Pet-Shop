@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import {Form,Col,Row, } from 'react-bootstrap'
+import {Form,Col,Row, Button, } from 'react-bootstrap'
 import Select from "react-select"
-
+import axios from 'axios'
+import {Image} from 'cloudinary-react'
+import ImageUpload from '../components/viewImg'
+import jwt from 'jsonwebtoken'
 
 
 class newAds extends Component {
@@ -11,6 +14,10 @@ class newAds extends Component {
         mainCategory:"",
         specificCategory:"",
         description:"",
+        images: [],
+        adsLocation:"",
+        price:0,
+        negotiable:false,
 
     }
 
@@ -19,6 +26,45 @@ class newAds extends Component {
           return true
         }
         return false
+    }
+
+    handleImageChange(e) {
+        e.preventDefault();
+        let reader = new FileReader();
+        let file = e.target.files[0];
+        reader.onloadend = () => {
+          try{
+              console.log(reader.result)
+              axios({
+                  method: 'post',
+                  url: 'http://localhost:5000/upload',
+                  headers: {},
+                  data: {data:reader.result}
+                }).then(
+                res => {alert(res.data.msg)}
+               )
+              
+              
+              } catch(error){
+              console.log(error)
+              }  
+          this.setState({
+            file: file,
+            imagePreviewUrl: reader.result
+          });
+        }
+        reader.readAsDataURL(file)
+    }
+
+    setImage=(e)=>{
+        this.setState({images:[... this.state.images,e]})
+    }
+
+    sub =(e)=>{
+        console.log(this.state)
+        const storedToken = localStorage.getItem('jwtToken')
+        const str = storedToken.replace('Bearer ', '')
+        const token = jwt.decode(str)
     }
    
      
@@ -95,7 +141,96 @@ class newAds extends Component {
                             <Form.Control as="textarea" rows="4" required onChange={(e)=>{this.setState({description:e.target.value})}} />
                         </Col>
                     </Row>
+                    
+                    <br/>
+                    <Row>
+                        <Col md={{offset:2,span:3}}>
+                            <Form.Label>Price <span style={{color:"red"}}>✶</span></Form.Label>
+                            <Form.Control as="input" type="number" rows="1" required onChange={(e)=>{this.setState({price:e.target.value})}} />
+                        </Col>
+                        <Col md={{offset:0,span:3}}>
+                        <Row style={{height: .035*window.innerHeight + 'px'}} />
+                        <Form.Check id="negotiable"
+                            custom={true}
+                            inline={true}
+                            label="Negotiable"
+                            onChange={(e)=>{this.setState({negotiable:e.target.checked})}}/>
+                        </Col>
+                    </Row>
 
+                    <br/>
+                    <Row  >
+                    <Col md={10}>
+                    <hr style={{
+                            color: "grey",
+                            backgroundColor: "grey",
+                            height: 1,
+                            width: "100%"
+                        }}
+                    />
+                    </Col>
+                    </Row>
+                    
+                    <br/>
+                    <Form.Label style={{color:"green"}}><span style={{color:"black"}}>✶</span> Ads with 3-5 photos sell 5X faster</Form.Label>
+                    <Row>
+                        <Col md={{offset:1,span:2}}>
+                            <ImageUpload SetImages={this.setImage} />
+                        </Col>
+                        <Col md={{offset:1,span:2}}>
+                            <ImageUpload SetImages={this.setImage} />
+                        </Col>
+                        <Col md={{offset:1,span:2}}>
+                            <ImageUpload SetImages={this.setImage} />
+                        </Col>
+                    </Row>
+
+                    <br/>
+                    <Row>
+                        <Col md={{offset:1,span:2}}>
+                            <ImageUpload SetImages={this.setImage} />
+                        </Col>
+                        <Col md={{offset:1,span:2}}>
+                            <ImageUpload SetImages={this.setImage} />
+                        </Col>
+                        <Col md={{offset:1,span:2}}>
+                            <ImageUpload SetImages={this.setImage} />
+                        </Col>
+                    </Row>
+
+                    <br/>
+                    <Row  >
+                    <Col md={10}>
+                    <hr style={{
+                            color: "grey",
+                            backgroundColor: "grey",
+                            height: 1,
+                            width: "100%"
+                        }}
+                    />
+                    </Col>
+                    </Row>
+                    
+
+                    <Row>
+                        <Col md={{offset:2,span:4}}>
+                            <Form.Label>Ad location <span style={{color:"red"}}>✶</span></Form.Label>
+                            <Form.Control as="textarea" rows="1" required onChange={(e)=>{this.setState({adsLocation:e.target.value})}} />
+                        </Col>
+                    </Row>
+                    
+                    <Row style={{height: .035*window.innerHeight + 'px'}} />
+                    <Form.Row>
+                        <Form.Group as={Col} md={{offset:4}}>
+                        <Button type="submit">Submit</Button>
+                        </Form.Group>
+                    </Form.Row>
+                    {/* <Button onClick={(e)=>this.sub(e)}></Button> */}
+                    <Row>
+                    {/* <Image cloudName="dtuayyndb" publicId="MyPet/qedhnlcfgtyvznnjmyyn.jpg" /> */}
+                    </Row>
+                    <Row style={{height: .035*window.innerHeight + 'px'}} />
+                    
                 </Col>
 
                 </Col>

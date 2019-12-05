@@ -41,7 +41,11 @@ const scopes = [
   'profile',
 
 ];
-
+// bodyParser = {
+//     json: {limit: '50mb', extended: true},
+//     urlencoded: {limit: '50mb', extended: true}
+//   };
+app.use(bodyParser.json({limit: '50mb', extended: true}))
 
 
 app.get('/upload', async (req, res) => {
