@@ -13,44 +13,58 @@ const AdsSchema = new Schema ({
        // required: true
     },
 
+    mainCategory: {
+        type:String
+       // required: true 
+    },
+
+    specificCategory: {
+        type:String
+       // required: true 
+    },
+
     description: {
         type:String
        // required: true 
     },
-     
-    photo:{
-       
+
+    adsLocation: {
+        type:String
+       // required: true 
     },
 
-    city:{
-        type:String
-       // required: true
+    price: {
+        type: Number
+       // required: true 
     },
 
-    price:{
-        type:Number
-       // required: true
+    negotiable: {
+        type:Boolean
+       // required: true 
     },
-     category:{
-        type:String
-       // required: true
-     },
 
-     contactBy:{
-        type:String
-       // required: true
-     },
-     reported :{
+    images:{
+        type: [
+            {
+                    imageKey : {
+                        type: String
+                    }
+                }
+                ] 
+    },
+
+    reported :{
         type:Boolean
        // required: true
      },
-     views:{
+    views:{
          type:Number
      },
 
-     timePosted :{
+    timePosted :{
         type:Date,
-        required: true
+        required: true,
+        default:Date.now
      }
 
 })

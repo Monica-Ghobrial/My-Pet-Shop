@@ -40,9 +40,7 @@ const RegUsersSchema = new Schema( {
     secret:{
         type:String
     },
-    photo:{
-
-    },
+    
     userAds: {
         type: [
         {
@@ -52,7 +50,6 @@ const RegUsersSchema = new Schema( {
             }
             ]
         },
-
 
      userNotif: {
          type: [
