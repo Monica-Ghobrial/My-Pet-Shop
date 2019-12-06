@@ -9,6 +9,9 @@ class navbar extends Component {
       
     }
     
+    redirectTo=(e)=>{
+        window.location.assign('http://localhost:3000/signIn')
+    }
      
     render() {
         let sig=""
@@ -35,15 +38,16 @@ class navbar extends Component {
                         alt="React Bootstrap logo"
                     />
                     </Navbar.Brand>
-                    <Navbar.Brand href="#home">Home</Navbar.Brand>
-                    <Navbar.Brand href="#home">My ADS</Navbar.Brand>
+                    <Navbar.Brand href="http://localhost:3000/home">Home</Navbar.Brand>
+                    <Navbar.Brand href="http://localhost:3000/myads">My ADS</Navbar.Brand>
+                    <Navbar.Brand href="http://localhost:3000/newads">Place Ads +</Navbar.Brand>
                     <Navbar.Brand href="#home">about</Navbar.Brand>
 
-                    <Col md={{offset:8}} >
+                    <Col md={{offset:6}} >
                     <Col md={{offset:num}}>
-                    <Button href="http://localhost:3000/signup" hidden={sig2}>Sign Up</Button>
+                    <Button  href="http://localhost:3000/signUp" hidden={sig2}>Sign Up</Button>
                     {' '}
-                    <Button href="http://localhost:3000/signin">{sig}</Button>
+                    <Button onClick={(e)=>this.redirectTo(e)}>{sig}</Button>
                     </Col>
                     </Col>
                     

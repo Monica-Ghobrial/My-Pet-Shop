@@ -7,12 +7,18 @@ const AdsSchema = new Schema ({
         type: Schema.Types.ObjectId, ref: 'RegUsers',
       
     },
-   
+    seller_phoneNumber:{
+        type: Number 
+        //required: true
+    },
+    seller_email: {
+        type: String
+        //required: true
+    },
     title :{
         type:String
        // required: true
     },
-
     mainCategory: {
         type:String
        // required: true 
@@ -43,14 +49,12 @@ const AdsSchema = new Schema ({
        // required: true 
     },
 
-    images:{
+    photos:{
         type: [
             {
-                    imageKey : {
-                        type: String
-                    }
+               type: String   
                 }
-                ] 
+            ] 
     },
 
     reported :{

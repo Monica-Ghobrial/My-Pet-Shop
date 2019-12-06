@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import {Form,InputGroup, Button,ButtonGroup,FormControl,Col,Row, Container,Card} from 'react-bootstrap'
-import Select from "react-select"
+import {Form, Button,Col,Card} from 'react-bootstrap'
 import axios from 'axios'
-import PhoneInput from 'react-phone-number-input/input'
 import { Parallax } from "react-parallax";
-import { sign } from "crypto";
 
 const image = require('../images/dog.jpg')
-
-
-const sectionStyle = {
-    width: "100%",
-    height: "100%",
-    backgroundImage: `url(../images/dog.jpg)`
-  };
 
 class signIn extends Component {
 
@@ -47,7 +37,15 @@ class signIn extends Component {
             headers: {},
             data: this.state
           }).then(
-          res => {localStorage.setItem('jwtToken', res.data.data);}
+          res => {
+            if (res.data.msg==="success"){
+                                    localStorage.setItem('jwtToken', res.data.data);
+                                    window.location.assign('http://localhost:3000/home')
+                                }else{
+                                    alert("A7A !!")
+                                }
+              
+          }
          ) 
         } catch(error){
         console.log(error)

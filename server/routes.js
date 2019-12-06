@@ -21,5 +21,14 @@ router.get('/verify/:token',UserControllers.verify)
 
 router.post('/upload',UserControllers.upload)
 
+router.post('/postAds',UserControllers.PostAD)
+router.post('/findmyads',UserControllers.findMyAds)
+router.get('/viewAds/:adsId',UserControllers.viewAds)
+router.get('/findAllAds',UserControllers.findAllAds)
+
+router.delete('/deleteAds/:adsId',UserControllers.deleteAds)
+router.put('/editAds/:adsId',UserControllers.editAds)
+
+
 
 module.exports = router
