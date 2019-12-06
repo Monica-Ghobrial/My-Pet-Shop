@@ -41,7 +41,11 @@ const scopes = [
   'profile',
 
 ];
-
+// bodyParser = {
+//     json: {limit: '50mb', extended: true},
+//     urlencoded: {limit: '50mb', extended: true}
+//   };
+app.use(bodyParser.json({limit: '50mb', extended: true}))
 
 
 app.get('/upload', async (req, res) => {
@@ -257,8 +261,10 @@ app.use(function(req, res, next) {
 //   });   
 ///////////////////////////////////////////////////
 const db = require('./config/keys').mongoURI
+const dotenv = require('dotenv');
+dotenv.config()
 
-mongoose.connect(db)
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Mongoose is connected xD ..."))
     .catch(err => console.log(err));
 

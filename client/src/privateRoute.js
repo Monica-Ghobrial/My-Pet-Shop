@@ -14,10 +14,9 @@ const PrivateRoute =  ({
   const storedToken = localStorage.getItem('jwtToken')
   if (!storedToken){
     isAuthenticated = false
-    console.log("token not found")
+    alert("You have to Login to access this page")
   }else{
     isAuthenticated = true
-    console.log("token found")
 
 }
   return (

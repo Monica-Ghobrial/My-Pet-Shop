@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer')
 const config = require('../config/mail')
 
+const dotenv = require('dotenv');
+dotenv.config()
 
 const transport = nodemailer.createTransport({
     host:"smtp.gmail.com",
@@ -8,8 +10,8 @@ const transport = nodemailer.createTransport({
    // secure:false,
     service: 'gmail',
     auth: {
-        user: config.user,
-        pass: config.pass
+        user: process.env.user,
+        pass: process.env.pass
     },
     tls: {
         rejectUnauthorized: false

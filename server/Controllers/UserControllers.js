@@ -6,9 +6,15 @@ const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const config = require('../../config/keys')
 const mail = require('../../config/mail')
-const tokenKey = config.secretOrKey;
 const mailer = require('../mailer')
+const cloudinary = require('cloudinary').v2
 
+const dotenv = require('dotenv');
+dotenv.config()
+const tokenKey = process.env.secretOrKey;
+const cloud_name =  process.env.cloud_name
+const api_key = process.env.api_key
+const api_secret = process.env.api_secret
 
 
 //const {google} = require('googleapis');
@@ -46,7 +52,8 @@ let UserControllers = {
       try {
         const { email, password } = req.body;
         const log_user = await User.findOne({ email });
-        if (!log_user) return res.status(400).json({ error : "Email does not exist" });
+        if (!log_user) return res.json({ msg : "Email does not exist" });
+        console.log("HERE 1")
   
         if (log_user){
           const match = bcrypt.compareSync(password, log_user.password);
@@ -57,11 +64,16 @@ let UserControllers = {
                   email: log_user.email,
                 };
                 const token = jwt.sign(payload, tokenKey, { expiresIn: "1000h" });
-                return res.json({data: `Bearer ${token}`})
+                console.log("HERE 2")
+                return res.status(200).json({msg:"success",data: `Bearer ${token}`})
               }else {
-                return res.json({data:'You need to verify the email that is used in registeration'})
+                console.log("HERE 3")
+                return res.json({msg:'You need to verify the email that is used in registeration'})
               }
-              }else return res.status(400).send({ error: "Wrong password" });
+              } else {
+                console.log("HERE 4")
+                return res.json({ msg: "Wrong password" });
+              }
         }        
   
       } 
@@ -85,7 +97,7 @@ let UserControllers = {
       if (oldUser)
       {
           console.log('Email Exists')
-          return res.status(400).json({ error: 'Email already exists' })
+          return res.json({ msg:"Failed" , error: 'Email already exists' })
       }
       else{
         const payload = {
@@ -160,21 +172,134 @@ let UserControllers = {
                }
       },
 
-      //Post a new AD
-      PostAD: async (req, res)=>{
+      findMyAds: async (req, res)=>{
         try{
-            
-          console.log("arrived")
-          const newAD = await Ads.create(req.body)
-          const createdAD = await Ads.findByIdAndUpdate(newAD.id,{"timePosteds":new Date()})
-          //const user = await RegUsers.findByIdAndUpdate(newAD.sellerID, {""})
-            res.json({ msg: 'AD creates successfully', data: newAD })
+          
+            const id= req.body.sellerID
+            const AD= await Ads.find({sellerID:id}).sort({timePosted: 'descending'})
+            if (AD){
+              return res.status(200).json({ msg: 'your Ads', data: AD })
+            }else{
+              return res.status(400).json({ msg: 'Bad request' })
+            }
            }
 
         catch (error) {
               console.log(error)
              }
+      },
+
+      findAllAds: async (req, res)=>{
+        try{
+          
+            const AD= await Ads.find().sort({timePosted: 'descending'})
+            if (AD){
+              return res.status(200).json({ msg: 'your Ads', data: AD })
+            }else{
+              return res.status(400).json({ msg: 'Bad request' })
+            }
+           }
+
+        catch (error) {
+              console.log(error)
+             }
+      },
+
+      viewAds: async (req, res)=>{
+        try{  
+            const id= req.params.adsId
+            const AD= await Ads.findById(id)
+            if (AD){
+              return res.status(200).json({ data: AD })
+            }else{
+              return res.status(400).json({ msg: 'Bad request' })
+            }
+          }
+
+         catch (error) {
+              console.log(error)
+            }
+     },
+
+      //Post a new AD
+      PostAD: async (req, res)=>{
+        try{
+          let images = req.body.images
+          let img_ids = []
+          for (let i=0 ; i<images.length ; i++){
+            if (images[i].length > 0){
+              cloudinary.config({ 
+                cloud_name: 'dtuayyndb', 
+                api_key: '219414563696285', 
+                api_secret: 'HUtlAgCsbO0egqY2D_Vv3rz3pWE' 
+              });
+              await cloudinary.uploader.upload(images[i] , {folder: "MyPet",
+                overwrite: true,
+                invalidate: true,},
+              function(error, result) {
+                if (result){
+                  img_ids.push(result.public_id)
+                }
+                if (error){
+                return res.json({ msg: "Can't upload images correctly" })
+                }
+              })
+            }
+          }
+          let seller = await User.findById(req.body.sellerID)
+          let newBody = Object.assign({},req.body)
+          delete newBody.images
+          newBody.photos = img_ids
+          newBody.seller_phoneNumber = seller.phoneNumber
+          newBody.seller_email = seller.email
+          console.log(newBody)
+          const newAD = await Ads.create(newBody)
+          return res.json({ msg: "Your ads is published now" , data:newAD.id})   
+           }
+
+        catch (error) {
+              console.log(error)
+            }
     },
+
+    editAds: async (req,res)=>{
+      try{
+        const id = req.params.adsId
+        const updated = await Ads.findByIdAndUpdate(id, req.body)
+        return res.status(200).json({msg:"Updated Successfully"})
+      }catch(e){
+
+      }
+    },
+    deleteAds: async (req,res)=>{
+      try{
+        const id = req.params.adsId
+        console.log(id)
+        const deleted = await Ads.findByIdAndRemove(id)
+        return res.status(200).json({msg:"Deleted !"})
+      }catch(e){
+
+      }
+    },
+    upload: async (req, res)=>{
+      try{
+        let link=req.body.data
+        cloudinary.config({ 
+        cloud_name:cloud_name, 
+        api_key: api_key,
+        api_secret: api_secret 
+      });
+      cloudinary.uploader.upload(link , {folder: "MyPet",
+        overwrite: true,
+        invalidate: true,},
+      function(error, result) {console.log(error,result.public_id)})
+      res.json({ msg: 'Uploaded' })
+       }
+
+      catch (error) {
+            console.log(error)
+          }
+  },
 /*
     uploadPhotos: async(req, res) =>{
         try{

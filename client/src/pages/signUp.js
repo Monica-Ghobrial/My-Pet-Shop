@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import {Form,InputGroup, Button,ButtonGroup,FormControl,Col,Row, Container,Card} from 'react-bootstrap'
+import {Form, Button,Col,Card} from 'react-bootstrap'
 import Select from "react-select"
 import axios from 'axios'
-import PhoneInput from 'react-phone-number-input/input'
 import { Parallax } from "react-parallax";
 
 const image = require('../images/dog.jpg')
@@ -43,7 +42,13 @@ class signUp extends Component {
             headers: {},
             data: this.state
           }).then(
-          res => {alert(res.data.msg)}
+          res => {
+              if (res.data.error){
+                alert(res.data.error)
+              }else{
+                alert(res.data.msg)}
+
+              }
          )
         
         
@@ -66,7 +71,7 @@ class signUp extends Component {
         return (
             <React.Fragment>
                 <Form onSubmit={this.submitData}>
-                    <Parallax bgImage={image} style={{height:window.innerHeight}} strength={-100}>  
+                    <Parallax bgImage={image} style={{height:window.innerHeight}} >  
                     <br/><br/><br/>
                     <Col md={3}>
                     <Card bg="light" border="primary">
