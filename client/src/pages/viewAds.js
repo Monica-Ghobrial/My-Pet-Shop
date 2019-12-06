@@ -1,24 +1,12 @@
 import React, { Component } from "react";
-import {Form,Col,Row, Button, Card, } from 'react-bootstrap'
-import Select from "react-select"
+import {Form,Col,Row } from 'react-bootstrap'
 import axios from 'axios'
-import {Image,Transformation} from 'cloudinary-react'
-import ImageUpload from '../components/viewImg'
-import jwt from 'jsonwebtoken'
-
+import {Image} from 'cloudinary-react'
+const cloudinaryName = process.env.REACT_APP_cloudName
 
 class viewAds extends Component {
 
     state = {
-        // sellerID:"",
-        // title:"",
-        // mainCategory:"",
-        // specificCategory:"",
-        // description:"",
-        // images: [],
-        // adsLocation:"",
-        // price:0,
-        // negotiable:false,
         respData:{photos:[]},
         loading:true
     }
@@ -52,7 +40,6 @@ class viewAds extends Component {
    
      
     render() {
-        let photos = this.state.respData.photos
         return (
             <React.Fragment >
                 <Form onSubmit={this.submitData}>
@@ -62,7 +49,7 @@ class viewAds extends Component {
 
                     <Row  >
                     <Col md={10}>
-                    <Form.Label style={{ color:"black" , fontSize:"18px" , fontWeight:"bold" }}><span style={{color:"blue"}}> {this.state.respData.title} </span></Form.Label>
+                    <Form.Label style={{ color:"black" , fontSize:"20px" , fontWeight:"bold" }}><span style={{color:"blue"}}> {this.state.respData.title} </span></Form.Label>
                     <hr style={{
                             color: "grey",
                             backgroundColor: "grey",
@@ -87,7 +74,7 @@ class viewAds extends Component {
                     <hr style={{
                             color: "grey",
                             backgroundColor: "grey",
-                            height: 1,
+                            height: .1,
                             width: "100%"
                         }}
                     />
@@ -112,17 +99,43 @@ class viewAds extends Component {
                             checked={this.state.respData.negotiable}/>
                         </Col>
                     </Row>
+
+                    <Row  >
+                    <Col md={10}>
+                    <Form.Label style={{ color:"black" , fontSize:"18px" , fontWeight:"bold" }}><span style={{color:"black"}}> Contact Info </span></Form.Label>
+                    <hr style={{
+                            color: "grey",
+                            backgroundColor: "grey",
+                            height: .1,
+                            width: "100%"
+                        }}
+                    />
+                    </Col>
+                    </Row>
+
                     <Row>
                         <Col md={{offset:1,span:8}}>
                             <Form.Label><span style={{color:"blue"}}>Ad location : </span> {this.state.respData.adsLocation} </Form.Label>
                         </Col>
                     </Row>
+                    <Row>
+                        <Col md={{offset:1,span:8}}>
+                            <Form.Label><span style={{color:"blue"}}>Phone number : </span> 0{this.state.respData.seller_phoneNumber} </Form.Label>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={{offset:1,span:8}}>
+                            <Form.Label><span style={{color:"blue"}}>Email : </span> {this.state.respData.seller_email} </Form.Label>
+                        </Col>
+                    </Row>
+
+                    
                     <Row  >
                     <Col md={10}>
                     <hr style={{
                             color: "grey",
                             backgroundColor: "grey",
-                            height: 1,
+                            height: .1,
                             width: "100%"
                         }}
                     />
@@ -134,10 +147,11 @@ class viewAds extends Component {
                         {
                             this.state.respData.photos.map((e,index)=>{
                                 return (
-                                    <Col md={{offset:0,span:3}}>
-                                        <Image cloudName="dtuayyndb"  height="300" width="400"  radius="60"
+                                    <Col md={{offset:0,span:6}}>
+                                        <Image cloudName={cloudinaryName}  height="300" width="400"  radius="60"
                                          publicId={this.state.respData.photos[index]} >
                                          </Image>
+                                    <br/>
                                     <br/>
                                     </Col>
                                     

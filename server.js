@@ -261,8 +261,10 @@ app.use(function(req, res, next) {
 //   });   
 ///////////////////////////////////////////////////
 const db = require('./config/keys').mongoURI
+const dotenv = require('dotenv');
+dotenv.config()
 
-mongoose.connect(db)
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Mongoose is connected xD ..."))
     .catch(err => console.log(err));
 

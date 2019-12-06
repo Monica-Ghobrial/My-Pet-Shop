@@ -2,33 +2,35 @@ import React, { Component } from "react";
 import {Form,Col,Row, Spinner , Card, Button } from 'react-bootstrap'
 import axios from 'axios'
 import {Image} from 'cloudinary-react'
-import jwt from 'jsonwebtoken'
+import Select from 'react-select'
 const cloudinaryName = process.env.REACT_APP_cloudName
 
 
-class myAds extends Component {
+class home extends Component {
 
     state = {
         loading: true,
         respData:{},
+        displayedAds:{},
+        searchType:"",
+        search:""
+
     }
 
     async componentDidMount(){ 
-        const storedToken = localStorage.getItem('jwtToken')
-        const str = storedToken.replace('Bearer ', '')
-        const token = jwt.decode(str)
-        this.setState({sellerID:token.id})
         try{
             await axios({
-                method: 'post',
-                url: 'http://localhost:5000/findmyads',
+                method: 'get',
+                url: 'http://localhost:5000/findAllAds',
                 headers: {},
-                data: {sellerID:token.id}
+                data: {}
               }).then(
               res => {
                   if (res.data.status=200){
                       console.log(res.data)
-                      this.setState({loading:false , respData:res.data.data})
+                      this.setState({loading:false , 
+                        respData:res.data.data,
+                        displayedAds:res.data.data})
                   }
               }
              )
@@ -69,8 +71,26 @@ class myAds extends Component {
         window.location.assign('http://localhost:3000/ads/'+adsId)
     }
 
-    redirectToEditAds=(adsId)=>{
-        window.location.assign('http://localhost:3000/editAds/'+adsId)
+    filterBy = (category,search) =>{
+        this.setState({ searchType: category})
+        this.setState({ search: search})
+        let ads = this.state.respData
+        let display = []
+        if (category==="All"){
+            for (let i=0;i<ads.length;i++){
+                if ( (ads[i].title).toLowerCase().includes(search)){
+                    display = display.concat(ads[i])
+                }
+            }
+        }else{
+            for (let i=0;i<ads.length;i++){
+                if ( (ads[i].mainCategory.includes(category)) && (ads[i].title).toLowerCase().includes(search)){
+                    display = display.concat(ads[i])
+                }
+            }
+        }
+        
+        this.setState({displayedAds:display})
     }
      
     render() {
@@ -79,17 +99,38 @@ class myAds extends Component {
             this.state.loading ? <div className='App'><Spinner animation='border' variant='primary' /></div> :
             <React.Fragment >
                 <Form onSubmit={this.submitData}>
-                <Col md={12}>
-                <Col md={{offset:2,span:10}}>
+                <Card >
+                <Col md={{offset:0,span:12}}>
                 <Row style={{height: .03*window.innerHeight + 'px'}} />
 
-                    <Row  >
-                    <Col md={10}>
-                    <Form.Label style={{ color:"black" , fontSize:"18px" , fontWeight:"bold" }}>My Ads</Form.Label>
+                    <Row >
+                    <Col md={12}>
+                    <Card.Header style={{backgroundColor:"#000"}}>
+                    <Row>
+                        <Form.Group as={Col} md={{offset:8,span:2}}>
+                            <Form.Label className="text-white">Search by :</Form.Label>
+                                <Select
+                                                    value={this.state.searchType.value}
+                                                    onChange={(e)=>{this.filterBy(e.value,this.state.search)}}
+                                                    options={ [
+                                                                { value: 'All', label: 'All' },
+                                                                { value: 'Animals', label: 'Animals' },
+                                                                { value: 'Accessories', label: 'Accessories' },
+                                                                { value: 'Food', label: 'Food' },
+                                                            ]}
+                                />
+                        </Form.Group>
+
+                        <Form.Group as={Col} md={{offset:0,span:2}}>
+                        <Form.Label className="text-white">Search :</Form.Label>
+                            <Form.Control as="textarea" rows="1" placeHolder="Search ..." onChange={(e)=>{{this.filterBy(this.state.searchType,e.target.value)}}}/>
+                        </Form.Group>
+                    </Row>
+                    </Card.Header>
                     <hr style={{
-                            color: "grey",
-                            backgroundColor: "grey",
-                            height: 1,
+                            color: "black",
+                            backgroundColor: "black",
+                            height: 2,
                             width: "100%"
                         }}
                     />
@@ -97,9 +138,9 @@ class myAds extends Component {
                     </Row>
                     <Row>
                     {
-                        this.state.respData.map((e,index)=>{
+                        this.state.displayedAds.map((e,index)=>{
                             return (
-                                <Col md={{offset:0,span:5}}>
+                                <Col md={{offset:0,span:6}}>
                                 <Card border="primary" bg="light" >
                                 
                                 <Row><br/></Row>
@@ -108,14 +149,14 @@ class myAds extends Component {
                                         <Col md={6}>
                                             <Form.Row>
                                             <Card.Text style={{fontWeight:"bold"}}>Title : </Card.Text>
-                                            <Card.Text>{this.state.respData[index].title} </Card.Text>
+                                            <Card.Text>{this.state.displayedAds[index].title} </Card.Text>
                                             </Form.Row>
                                         </Col>
 
                                         <Col md={6}>
                                             <Form.Row>
                                             <Card.Text style={{fontWeight:"bold"}}>Price : </Card.Text>
-                                            <Card.Text>{this.state.respData[index].price} </Card.Text>
+                                            <Card.Text>{this.state.displayedAds[index].price} </Card.Text>
                                             </Form.Row>
                                         </Col>
                                     </Form.Row>     
@@ -124,14 +165,14 @@ class myAds extends Component {
                                         <Col md={6}>
                                             <Form.Row>
                                             <Card.Text style={{fontWeight:"bold"}}>Main Category : </Card.Text>
-                                            <Card.Text>{this.state.respData[index].mainCategory} </Card.Text>
+                                            <Card.Text>{this.state.displayedAds[index].mainCategory} </Card.Text>
                                             </Form.Row>
                                         </Col>
 
                                         <Col md={6}>
                                             <Form.Row>
                                             <Card.Text style={{fontWeight:"bold"}}>Specific Category : </Card.Text>
-                                            <Card.Text>{this.state.respData[index].specificCategory} </Card.Text>
+                                            <Card.Text>{this.state.displayedAds[index].specificCategory} </Card.Text>
                                             </Form.Row>
                                         </Col>
                                     </Form.Row>
@@ -140,7 +181,7 @@ class myAds extends Component {
                                         <Col md={6}>
                                             <Form.Row>
                                             <Card.Text style={{fontWeight:"bold"}}>Location : </Card.Text>
-                                            <Card.Text>{this.state.respData[index].adsLocation} </Card.Text>
+                                            <Card.Text>{this.state.displayedAds[index].adsLocation} </Card.Text>
                                             </Form.Row>
                                         </Col>
                                     </Form.Row>    
@@ -148,12 +189,11 @@ class myAds extends Component {
                                     <Form.Row>
                                         <Col md={6}>
                                         <Image cloudName={cloudinaryName}  height="150" width="150" crop="fill"
-                                         publicId={this.state.respData[index].photos[0]} />
+                                         publicId={this.state.displayedAds[index].photos[0]} />
                                          </Col>
                                          <Col md={6}>
                                             <Row style={{height: .1*window.innerHeight + 'px'}} />
-                                            <Button onClick={(e)=>{this.redirectToAds(this.state.respData[index]._id)}}>View Ads</Button>{' '}
-                                            <Button onClick={(e)=>{this.redirectToEditAds(this.state.respData[index]._id)}}>Edit Ads</Button>
+                                            <Button onClick={(e)=>{this.redirectToAds(this.state.displayedAds[index]._id)}}>View Ads</Button>
                                          </Col>
                                     </Form.Row>
 
@@ -170,13 +210,11 @@ class myAds extends Component {
                         )
                     }
                     </Row>
-                    <Row>
-                    </Row>
+
                     <Row style={{height: .035*window.innerHeight + 'px'}} />
                     
                 </Col>
-
-                </Col>
+                </Card>
                 </Form>
             </React.Fragment>
         )
@@ -185,4 +223,4 @@ class myAds extends Component {
 }
 
 
-export default myAds;
+export default home;

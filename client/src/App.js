@@ -10,7 +10,8 @@ import Navbar from './pages/navBar'
 import NewAds from './pages/newAds'
 import MyAds from './pages/myAds'
 import ViewAds from './pages/viewAds'
-
+import EditAds from './pages/editAds'
+import Home from './pages/home'
 if (localStorage.jwtToken){
   setAuthToken(localStorage.jwtToken)
 }
@@ -30,9 +31,11 @@ class App extends Component {
           <Route exact path='/signUp' component={SignUp} />
           <Route exact path='/signIn' component={SignIn} />
           <Route exact path='/verify/:token' component={Verify} />
-          <Route exact path='/newAds' component={NewAds} />
-          <Route exact path='/myAds' component={MyAds} />
           <Route exact path='/ads/:adsId' component={ViewAds} />
+          <Route exact path='/editAds/:adsId' component={EditAds} />
+          <Route exact path='/home' component={Home} />
+          <PrivateRoute exact path='/newAds' component={NewAds} />
+          <PrivateRoute exact path='/myAds' component={MyAds} />
           <PrivateRoute exact path='/try' component={"WELCOME"}/>
         
         </Switch>
