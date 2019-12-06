@@ -3,26 +3,35 @@ services:
   app:
     container_name: docker-node-mongo
     restart: always
-    build: .
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
       # context: .
       # dockerfile: Dockerfile
     ports:
       - '5000:5000'
-    # volumes:
-    #   - ./server:/usr/src/app/server
+    volumes:
+      - ./server:/usr/src/app/server
     links:
       - mongo
     depends_on:
       - mongo
-  # client:
-  #   container_name: todo-client
-  #   restart: always
-  #   build: ./client
-  #   # dockerfile: Dockerfile-alternate
-  #   volumes:
-  #     - ./client:/usr/src/app/client
-  #   ports:
-  #     - '3020:3020'
+  client:
+    container_name: todo-client
+    restart: always
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    # dockerfile: Dockerfile-alternate
+    volumes:
+      - ./client:/usr/src/app/client
+    ports:
+      - '3000:3000'
+    links:
+      - mongo
+    depends_on:
+      - mongo
+      - app
   mongo:
     image: mongo:latest
     # container-name: "mymongo"
