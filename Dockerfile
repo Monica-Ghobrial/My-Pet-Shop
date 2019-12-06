@@ -1,29 +1,44 @@
+# FROM node:latest
+# # /RUN apk add --no-cache nodejs npm
+# WORKDIR /usr/src/app
 
-# Setup and build the client
+# COPY package*.json ./
+# RUN npm install
 
-FROM node:latest as client
-
-WORKDIR /usr/app/client/
-COPY client/package*.json ./
-RUN npm install -qy
-COPY client/ ./
-RUN npm run build
+# COPY . .
 
 
-# Setup the server
+# EXPOSE 5000
+
+# # ENTRYPOINT ["node"]
+#  CMD ["npm","start"]
+
+
+# FROM mhart/alpine-node:11 AS builder
+# WORKDIR /usr/src/client
+# COPY . .
+# RUN yarn run build
+# FROM mhart/alpine-node
+
+# RUN yarn global add serve
+
+# WORKDIR /usr/src/client
+
+# COPY --from=builder /app/bu .
+
+# CMD ["serve", "-p", "80", "-s", "."]
+
+# =========================================
 
 FROM node:latest
+# RUN mkdir -p/usr/src/client
+WORKDIR /usr/src/client
 
-WORKDIR /usr/app/
-COPY --from=client /usr/app/client/build/ ./client/build/
+COPY . package*.json ./
 
-WORKDIR /usr/app/server/
-COPY server/package*.json ./
-RUN npm install -qy
-COPY server/ ./
-
-# ENV PORT 8000
-
-EXPOSE 8000
+RUN npm install
+COPY . .
+RUN npm build
+EXPOSE 3000
 
 CMD ["npm", "start"]
