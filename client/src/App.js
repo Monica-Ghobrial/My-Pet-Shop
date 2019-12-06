@@ -19,7 +19,7 @@ if (localStorage.jwtToken){
 class App extends Component {
   render(){
     return (
-      <div style={{  'overflowX':'hidden' }}>
+  //    <div style={{  'overflowX':'hidden' }}>
       <Router>
         <link
           rel='stylesheet'
@@ -42,7 +42,7 @@ class App extends Component {
 
 
       </Router>
-    </div>
+    //</div>
     );
   }
 }
