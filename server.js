@@ -7,6 +7,8 @@ const Questions = require('./server/api/questions')
 const User = require('./server/api/regUser')
 const Photos = require('googlephotos');
 const OAuth2Data = require('./server/google_keys.json')
+const db = require('./config/keys').mongoURI
+const dotenv = require('dotenv');
 
 const UserContollers = require('./server/Controllers/UserControllers')
 
@@ -260,6 +262,7 @@ app.use(function(req, res, next) {
 //     renderIfAuthenticated(req, res, 'pages/album');
 //   });   
 ///////////////////////////////////////////////////
+
 const db = require('./config/keys').mongoURI
 const dotenv = require('dotenv');
 dotenv.config()
