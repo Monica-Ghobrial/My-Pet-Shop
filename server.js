@@ -7,6 +7,8 @@ const Questions = require('./server/api/questions')
 const User = require('./server/api/regUser')
 const Photos = require('googlephotos');
 const OAuth2Data = require('./server/google_keys.json')
+const db = require('./config/keys').mongoURI
+const dotenv = require('dotenv');
 
 const UserContollers = require('./server/Controllers/UserControllers')
 
@@ -41,7 +43,11 @@ const scopes = [
   'profile',
 
 ];
-
+// bodyParser = {
+//     json: {limit: '50mb', extended: true},
+//     urlencoded: {limit: '50mb', extended: true}
+//   };
+app.use(bodyParser.json({limit: '50mb', extended: true}))
 
 
 app.get('/upload', async (req, res) => {
@@ -256,9 +262,11 @@ app.use(function(req, res, next) {
 //     renderIfAuthenticated(req, res, 'pages/album');
 //   });   
 ///////////////////////////////////////////////////
-const db = require('./config/keys').mongoURI
+// const db = require('./config/keys').mongoURI
+// const dotenv = require('dotenv');
+dotenv.config()
 
-mongoose.connect(db)
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Mongoose is connected xD ..."))
     .catch(err => console.log(err));
 

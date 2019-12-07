@@ -1,45 +1,46 @@
 version: '3'
 services:
-  # app:
-  #   container_name: docker-node-mongo
-  #   restart: always
-  #   build: 
-  #     context: ./server
-  #     dockerfile: Dockerfile
-  #     # context: .
-  #     # dockerfile: Dockerfile
-  #   ports:
-  #     - '5000:5000'
-  #   volumes:
-  #     - ./server:/usr/src/app/server
-  #   links:
-  #     - mongo
-  #   depends_on:
-  #     - mongo
+  app:
+    container_name: docker-node-mongo
+    # image: trying
+    restart: always
+    build: .
+      # context: ./server
+      # dockerfile: Dockerfile
+      # context: .
+      # dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    # volumes:
+    #   - ./server:/usr/src/app/server
+    links:
+      - mongo
+    depends_on:
+      - mongo
 
-  client33:
+  client4:
     # container_name: Front 
-    image: client3
+    image: trying
     restart: always
     build: .
       # context: ./client
       # dockerfile: Dockerfile
     # dockerfile: Dockerfile-alternate
-    # volumes:
+    # volumes: 
     #   - ./client:/usr/src/app/client
     ports:
       - '3000:3000'
     # links:
     #   - mongo
-    # depends_on:
-    #   - mongo
-    #   - app
-#   mongo:
-#     image: mongo:latest
-#     # container-name: "mymongo"
-#     # restart: always
-#     ports:
-#       - '27017:27017'
+    depends_on:
+      - mongo
+      - app
+  mongo:
+    image: mongo:latest
+    # container-name: "mymongo"
+    # restart: always
+    ports:
+      - '27017:27017'
 
 # =========================================================================
 # version: '3'

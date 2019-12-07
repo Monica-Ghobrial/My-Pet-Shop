@@ -2,10 +2,10 @@
 # # /RUN apk add --no-cache nodejs npm
 # WORKDIR /usr/src/app
 
-# COPY package*.json ./
+# COPY ./server/package*.json ./
 # RUN npm install
 
-# COPY . .
+# COPY ./server .
 
 
 # EXPOSE 5000
@@ -34,10 +34,11 @@ FROM node:latest
 # RUN mkdir -p/usr/src/client
 WORKDIR /usr/src/client
 
-COPY . package*.json ./
+# COPY . package*.json ./
+COPY ./client/package*.json ./
 
 RUN npm install
-COPY . .
+COPY ./client .
 RUN npm build
 EXPOSE 3000
 

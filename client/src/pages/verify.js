@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import {Form,Alert,Col,Row, } from 'react-bootstrap'
-import Select from "react-select"
 import axios from 'axios'
-import PhoneInput from 'react-phone-number-input/input'
 import { Parallax } from "react-parallax";
-import { sign } from "crypto";
 
 const image = require('../images/doggy.jpg')
 
