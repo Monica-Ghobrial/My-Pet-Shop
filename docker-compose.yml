@@ -1,0 +1,94 @@
+version: '3'
+services:
+  app:
+    container_name: docker-node-mongo
+    # image: trying
+    restart: always
+    build: .
+      # context: ./server
+      # dockerfile: Dockerfile
+      # context: .
+      # dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    # volumes:
+    #   - ./server:/usr/src/app/server
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
+  client4:
+    # container_name: Front 
+    image: trying
+    restart: always
+    build: .
+      # context: ./client
+      # dockerfile: Dockerfile
+    # dockerfile: Dockerfile-alternate
+    # volumes: 
+    #   - ./client:/usr/src/app/client
+    ports:
+      - '3000:3000'
+    # links:
+    #   - mongo
+    depends_on:
+      - mongo
+      - app
+  mongo:
+    image: mongo:latest
+    # container-name: "mymongo"
+    # restart: always
+    ports:
+      - '27017:27017'
+
+# =========================================================================
+# version: '3'
+# services:
+#   app:
+#     #container_name: docker-node-mongo
+#     restart: always
+#     build: .
+#       # context: .
+#       # dockerfile: Dockerfile
+#     ports:
+#       - '5000:5000'
+#     # volumes:
+#     #   - ./server:/usr/src/app/server
+#     links:
+#       - mongo
+#     depends_on:
+#       - mongo
+  
+#=================================================================================
+  # client:
+  #   # container_name: Ser-Cli
+  #   restart: always
+  #   build: .
+  #     # context: ./client
+  #     # dockerfile: Dockerfile
+  #   # dockerfile: Dockerfile-alternate
+  #   # volumes:
+  #   #   - ./client:/usr/src/app/client
+  #   ports:
+  #     - '3000:3000'
+  #   # depends_on:
+  #   #   - app
+
+
+  # client:
+  #   container_name: todo-client
+  #   restart: always
+  #   build: ./client
+  #   # dockerfile: Dockerfile-alternate
+  #   volumes:
+  #     - ./client:/usr/src/app/client
+  #   ports:
+  #     - '3020:3020'
+  # ========================================================
+  # mongo:
+    # image: mongo:latest
+    # # container-name: "mymongo"
+    # # restart: always
+    # ports:
+    #   - '27017:27017'
