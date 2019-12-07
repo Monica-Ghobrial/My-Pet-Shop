@@ -262,8 +262,9 @@ app.use(function(req, res, next) {
 //     renderIfAuthenticated(req, res, 'pages/album');
 //   });   
 ///////////////////////////////////////////////////
-// const db = require('./config/keys').mongoURI
-// const dotenv = require('dotenv');
+
+const db = require('./config/keys').mongoURI
+const dotenv = require('dotenv');
 dotenv.config()
 
 mongoose.connect(process.env.MONGO_URI)
