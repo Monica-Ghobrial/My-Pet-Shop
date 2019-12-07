@@ -7,8 +7,6 @@ const Questions = require('./server/api/questions')
 const User = require('./server/api/regUser')
 const Photos = require('googlephotos');
 const OAuth2Data = require('./server/google_keys.json')
-const db = require('./config/keys').mongoURI
-const dotenv = require('dotenv');
 
 const UserContollers = require('./server/Controllers/UserControllers')
 
@@ -49,6 +47,9 @@ const scopes = [
 //   };
 app.use(bodyParser.json({limit: '50mb', extended: true}))
 
+if (process.env.NODE_EVN === "production"){
+    app.use(express.static("client/build"))
+}
 
 app.get('/upload', async (req, res) => {
     if (!authed) {
