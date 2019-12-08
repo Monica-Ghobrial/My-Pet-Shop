@@ -1,8 +1,8 @@
 version: '3'
 services:
   app:
-    container_name: docker-node-mongo
-    # image: trying
+    # container_name: docker-node-mongo
+    image: serverm
     restart: always
     build: .
       # context: ./server
@@ -20,7 +20,7 @@ services:
 
   client4:
     # container_name: Front 
-    image: trying
+    image: clienttt
     restart: always
     build: .
       # context: ./client
@@ -37,7 +37,7 @@ services:
       - app
   mongo:
     image: mongo:latest
-    # container-name: "mymongo"
+    # container_name: mymongo
     # restart: always
     ports:
       - '27017:27017'

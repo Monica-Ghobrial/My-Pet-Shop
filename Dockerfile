@@ -1,17 +1,17 @@
-# FROM node:latest
-# # /RUN apk add --no-cache nodejs npm
-# WORKDIR /usr/src/app
+FROM node:latest
+# /RUN apk add --no-cache nodejs npm
+WORKDIR /usr/src/app
 
-# COPY ./server/package*.json ./
-# RUN npm install
+COPY  package*.json ./
+RUN npm install
 
-# COPY ./server .
+COPY . .
 
 
-# EXPOSE 5000
+EXPOSE 5000
 
-# # ENTRYPOINT ["node"]
-#  CMD ["npm","start"]
+# ENTRYPOINT ["node"]
+ CMD ["npm","start"]
 
 
 # FROM mhart/alpine-node:11 AS builder
@@ -30,16 +30,16 @@
 
 # =========================================
 
-FROM node:latest
-# RUN mkdir -p/usr/src/client
-WORKDIR /usr/src/client
+# FROM node:latest
+# # RUN mkdir -p/usr/src/client
+# WORKDIR /usr/src/client
 
-# COPY . package*.json ./
-COPY ./client/package*.json ./
+# # COPY . package*.json ./
+# COPY ./client/package*.json ./
 
-RUN npm install
-COPY ./client .
-RUN npm build
-EXPOSE 3000
+# RUN npm install
+# COPY ./client .
+# RUN npm build
+# EXPOSE 3000
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
