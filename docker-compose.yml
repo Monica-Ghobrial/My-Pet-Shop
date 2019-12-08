@@ -2,7 +2,7 @@ version: '3'
 services:
   app:
     # container_name: docker-node-mongo
-    image: serverm
+    image: userver
     restart: always
     build: .
       # context: ./server
@@ -13,14 +13,14 @@ services:
       - '5000:5000'
     # volumes:
     #   - ./server:/usr/src/app/server
-    links:
-      - mongo
-    depends_on:
-      - mongo
+    # links:
+    #   - mongo
+    # depends_on:
+    #   - mongo
 
   client4:
     # container_name: Front 
-    image: clienttt
+    image: ccc
     restart: always
     build: .
       # context: ./client
@@ -33,14 +33,14 @@ services:
     # links:
     #   - mongo
     depends_on:
-      - mongo
+      # - mongo
       - app
-  mongo:
-    image: mongo:latest
-    # container_name: mymongo
-    # restart: always
-    ports:
-      - '27017:27017'
+  # mongo:
+  #   image: mongo:latest
+  #   # container_name: mymongo
+  #   # restart: always
+  #   ports:
+  #     - '27017:27017'
 
 # =========================================================================
 # version: '3'

@@ -42,7 +42,7 @@ class signIn extends Component {
                                     localStorage.setItem('jwtToken', res.data.data);
                                     window.location.assign('http://localhost:3000/home')
                                 }else{
-                                    alert("A7A !!")
+                                    alert(res.data.msg)
                                 }
               
           }
@@ -80,7 +80,7 @@ class signIn extends Component {
                     <Form.Row>
                         <Form.Group as={Col} >
                             <Form.Label>Password<span style={{color:"red"}}>✶</span></Form.Label>
-                            <Form.Control as="input" type={this.state.showPass} pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  
+                            <Form.Control as="input" type="password"    
                                 required onChange={(e)=>{this.setState({password:e.target.value})}} />
                         </Form.Group>
                     </Form.Row>                    
