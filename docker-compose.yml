@@ -2,7 +2,7 @@ version: '3'
 services:
   app:
     # container_name: docker-node-mongo
-    image: news
+    image: newserv
     restart: always
     build: .
       # context: ./server
@@ -20,7 +20,7 @@ services:
 
   client4:
     # container_name: Front 
-    image: newc
+    image: newcli
     restart: always
     build: .
       # context: ./client
