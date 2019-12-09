@@ -104,7 +104,7 @@ class signUp extends Component {
                     <Form.Row>
                         <Form.Group as={Col} >
                             <Form.Label>Password<span style={{color:"red"}}>✶</span></Form.Label>
-                            <Form.Control as="input" type={this.state.showPass} pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" data-toggle="tooltip" 
+                            <Form.Control as="input" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" data-toggle="tooltip" 
                                 title="At least one capital letter , small letter , number and 8 Characters"
                                 required onChange={(e)=>{this.setState({password:e.target.value})}} />
                         </Form.Group>
