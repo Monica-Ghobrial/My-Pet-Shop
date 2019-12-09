@@ -41,7 +41,7 @@ class navbar extends Component {
                     <Navbar.Brand href="http://localhost:3000/home">Home</Navbar.Brand>
                     <Navbar.Brand href="http://localhost:3000/myads">My ADS</Navbar.Brand>
                     <Navbar.Brand href="http://localhost:3000/newads">Place Ads +</Navbar.Brand>
-                    <Navbar.Brand href="#home">about</Navbar.Brand>
+                    {/* <Navbar.Brand href="#home">about</Navbar.Brand> */}
 
                     <Col md={{offset:6}} >
                     <Col md={{offset:num}}>

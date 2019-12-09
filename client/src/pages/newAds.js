@@ -38,19 +38,19 @@ class newAds extends Component {
         this.setState({images:[... this.state.images,e]})
     }
 
-    async submitData (event){
+    submitData =(event)=>{
         event.preventDefault();
-        console.log(this.state.images)
         try{
-            await axios({
+            axios({
             method: 'post',
             url: 'http://localhost:5000/postAds',
             headers: {},
             data: this.state
           }).then(
-          res => {alert(res.data.msg)}
+          res => {alert(res.data.msg)
+            window.location.assign('http://localhost:3000/myads')}
          )
-        window.location.assign('http://localhost:3000/myads')
+        
         
         
         } catch(error){
@@ -58,7 +58,6 @@ class newAds extends Component {
         }  
 
       }
-    
    
      
     render() {
